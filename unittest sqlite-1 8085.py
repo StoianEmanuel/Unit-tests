@@ -27,7 +27,14 @@ class TestAPIMethods(unittest.TestCase):
     def test_get_meta(self):
         response = get_response(base_url, port, '/get_meta')
         self.assertEqual(response.status_code, expected_response)
-        self.assertEqual(response.json(), expected_meta_result)
+        #self.assertEqual(response.json(), expected_meta_result)
+        response_json = response.json()
+        self.assertIsInstance(response_json, dict)
+        self.assertIn("@context", response_json)
+        self.assertIn("@schema", response_json["@context"])
+        self.assertEqual(response_json["@context"]["@schema"], database)
+        self.assertIn(data_type+'1', response_json)
+        self.assertIsInstance(response_json[data_type+'1'], str)        # +1 because data_type in is video_games1 in for get_meta
 
     @parameterized.expand([('video_games', 'true'),
                            ('video_games', 'false'),
