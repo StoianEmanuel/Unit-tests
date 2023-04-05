@@ -68,21 +68,12 @@ class TestAPIMethods(unittest.TestCase):
             # Check that @list contains no more than 30% null values
             for element in response.json()['@list']:
                 # Check that all keys from @list exists and none are missing
-                metadata = "@id,Title,Features.Handheld?,Features.Max Players,Features.Multiplatform,Features.Online?,Metadata.Genres,Metadata.Licensed?,Metadata.Publishers,Metadata.Sequel?,Metrics.Review Score,Metrics.Sales,Metrics.Used Price,Release.Console,Release.Rating,Release.Re-release?,Release.Year,Length.All PlayStyles.Average,Length.All PlayStyles.Leisure,Length.All PlayStyles.Median,Length.All PlayStyles.Polled,Length.AllPlayStyles.Rushed,Length.Completionists.Average,Length.Completionists.Leisure,Length.Completionists.Median,Length.Completionists.Polled,Length.Completionists.Rushed,Length.Main + Extras.Average,Length.Main + Extras.Leisure,Length.Main + Extras.Median,Length.Main + Extras.Polled,Length.Main + Extras.Rushed,Length.Main Story.Average,Length.Main Story.Leisure,Length.Main Story.Median,Length.Main Story.Polled,Length.Main Story.Rushed",
-                # Convert keys tuple into a list of keys
-                keys_list_metadata = list(metadata)
-                # Split the string above in invidual keys inside list
-                keys_list_metadata = str.split(keys_list_metadata[0], ',')
+                metadata = ['@id', 'Title', 'Features.Handheld?', 'Features.Max Players', 'Features.Multiplatform?', 'Features.Online?', 'Metadata.Genres', 'Metadata.Licensed?', 'Metadata.Publishers', 'Metadata.Sequel?', 'Metrics.Review Score', 'Metrics.Sales', 'Metrics.Used Price', 'Release.Console', 'Release.Rating', 'Release.Re-release?', 'Release.Year', 'Length.All PlayStyles.Average', 'Length.All PlayStyles.Leisure', 'Length.All PlayStyles.Median', 'Length.All PlayStyles.Polled', 'Length.All PlayStyles.Rushed', 'Length.Completionists.Average', 'Length.Completionists.Leisure', 'Length.Completionists.Median', 'Length.Completionists.Polled', 'Length.Completionists.Rushed', 'Length.Main + Extras.Average', 'Length.Main + Extras.Leisure', 'Length.Main + Extras.Median', 'Length.Main + Extras.Polled', 'Length.Main + Extras.Rushed', 'Length.Main Story.Average', 'Length.Main Story.Leisure', 'Length.Main Story.Median', 'Length.Main Story.Polled', 'Length.Main Story.Rushed']                 
+                # Convert keys list into a list of keys
                 keys_list_element = list(element.keys())
-                # Transform lists into arrays
-                arr_meta = [sub.split() for sub in keys_list_metadata]
-                arr_elem = [sub.split() for sub in keys_list_element]
-                # Display array
-                self.assertTrue(len(arr_meta) == len(
-                    arr_elem), "Metadata and properties of elements from @list are not the same")
-                for i in range(len(arr_meta)):
-                    self.assertTrue(arr_meta[i] == arr_elem[i], "Metadata and properties of elements from @list are not the same for" + str(
-                        arr_elem[i]) + ' ' + str(arr_meta[i]))
+
+                # Check if all fields from metadata are in the list of keys for every element of @list response
+                self.assertEqual(keys_list_element, metadata)
 
                 null_property_count = 0
                 property_count = len(element.keys())
