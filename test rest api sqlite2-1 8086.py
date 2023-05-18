@@ -6,7 +6,7 @@ from parameterized import parameterized
 
 base_url = "http://127.0.0.1:"
 expected_response = 200
-port = 8565
+port = 8565     #8086
 database = 'SQLite'
 data_type: str
 expected_schema = str
