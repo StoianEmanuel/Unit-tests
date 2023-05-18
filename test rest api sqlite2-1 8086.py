@@ -17,8 +17,8 @@ expected_meta_result = {
         "video_games": "Id,Name,Platform,Release Year,Genre,Publisher,North America Sales,Europe Sales,Japan Sales,Other Sales,Global Sales,Critic Score,Critic Count,User Score,User Count,Developer,Rating",
         "consoles": "Id,Name,Manufacturer,Release Year,Units Sold (millions),Type,Number of Exclusives,Processing Unit Type,CPU Equivalent,CPU Frequency,GPU Equivalent,RAM Size,RAM Frequency",
         "mice": "Id,Manufacturer,Model,Resolution,Design,Number of buttons,Interface,Weight,Size,Rating,Link address,Battery,Use,Extra Functions",
-                "CPU": "Model,Manufacturer,Family,Codename,Release Year,Discontinued,Base Clock,Boost Clock,Sockets,L1 Cache Size,L2 Cache Size,Process Size (nm),Number of Cores,Number of Threads,TDP,System Memory Type,System Memory Frequency,Instruction Set,Maximum Operating Temperature,Launch Price ($)",
-                "GPU": "Model,Manufacturer,Release Year,Discontinued,Graphics Processor,Transistors (millions),Process Size (nm),Shading Units,Core Base Clock,Core Boost Clock,Memory Type,Memory Size,Memory Bandwidth,Memory Clock Speed (Effective),TDP,Display Outputs,Cooling System,Cooling Type,DirectX,OpenGL,OpenCL,Vulkan,Shader Model,CUDA,Launch Price ($)"
+        "CPU": "Model,Manufacturer,Family,Codename,Release Year,Discontinued,Base Clock,Boost Clock,Sockets,L1 Cache Size,L2 Cache Size,Process Size (nm),Number of Cores,Number of Threads,TDP,System Memory Type,System Memory Frequency,Instruction Set,Maximum Operating Temperature,Launch Price ($)",
+        "GPU": "Model,Manufacturer,Release Year,Discontinued,Graphics Processor,Transistors (millions),Process Size (nm),Shading Units,Core Base Clock,Core Boost Clock,Memory Type,Memory Size,Memory Bandwidth,Memory Clock Speed (Effective),TDP,Display Outputs,Cooling System,Cooling Type,DirectX,OpenGL,OpenCL,Vulkan,Shader Model,CUDA,Launch Price ($)"
 }
 
 
@@ -67,7 +67,7 @@ class TestAPI(unittest.TestCase):
         
         else:
             # Check that @list contains the same field as the one for predictions and not duplicates for years
-            count_for_duplicates = 0
+            self.assertEqual(response.json()['@context']['@schema'], expected_schema)
             response_years = []
             request_years  = [int(x) for x in years.split(',')]
 
@@ -124,8 +124,7 @@ class TestAPI(unittest.TestCase):
         expected_schema = f"{database}/{data_type}"
         if (snippet == 'false' or snippet == 'true') and data_type in data_types:
             self.assertEqual(response.status_code, expected_response)
-            self.assertEqual(
-                response.json()['@context']['@schema'], expected_schema)
+            self.assertEqual(response.json()['@context']['@schema'], expected_schema)
 
             # Check that @list contains at least 20 element for snippet = false or only 20 for snippet = true
             if snippet == 'false':
