@@ -18,12 +18,14 @@ data_type = 'video_games'
 expected_schema = f"{database}/{data_type}"
 
 
+# Function to get response for a request
 def get_response(base_url, port, option):
     url_meta = base_url + str(port) + option
     return requests.get(url_meta)
 
 
 class TestAPIMethods(unittest.TestCase):
+    # test get_meta response
     def test_get_meta(self):
         response = get_response(base_url, port, '/get_meta')
         self.assertEqual(response.status_code, expected_response)
@@ -36,15 +38,17 @@ class TestAPIMethods(unittest.TestCase):
         self.assertIn(data_type+'1', response_json)
         self.assertIsInstance(response_json[data_type+'1'], str)        # +1 because data_type in is video_games1 in for get_meta
 
-    @parameterized.expand([('video_games', 'true'),
-                           ('video_games', 'false'),
+
+    # test get_data responses
+    @parameterized.expand([('video_games', 'true')  ,
+                           ('video_games', 'false') ,
                            ('video_games', 'random'),
-                           ('video_games', ''),
-                           ('random', 'true'),
-                           ('random', 'false'),
-                           ('random', 'random'),
-                           ('random', ''),
-                           ('VIDEO_GAMES', 'true'),
+                           ('video_games', '')      ,
+                           ('random', 'true')       ,
+                           ('random', 'false')      ,
+                           ('random', 'random')     ,
+                           ('random', '')           ,
+                           ('VIDEO_GAMES', 'true')  ,
                            ('video_games', 'FALSE')
                            ])
     def test_get_data(self, data_type, snippet):
